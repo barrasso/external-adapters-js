@@ -57,7 +57,7 @@ export const mockWebSocketServer = (URL: string) => {
 export const createAdapter = (): Adapter<typeof customSettings> => {
   return new Adapter({
     name: 'TEST',
-    defaultEndpoint: 'price-ws',
+    defaultEndpoint: endpoint.name,
     endpoints: [endpoint],
     customSettings,
   })
