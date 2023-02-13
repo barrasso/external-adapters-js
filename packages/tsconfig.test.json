@@ -480,6 +480,9 @@
       "path": "./sources/polygon/tsconfig.test.json"
     },
     {
+      "path": "./sources/polygon-test/tsconfig.test.json"
+    },
+    {
       "path": "./sources/por-address-list/tsconfig.test.json"
     },
     {
