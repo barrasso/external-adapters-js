@@ -1,4 +1,4 @@
-import { PriceEndpointInputParameters } from '@chainlink/external-adapter-framework/adapter'
+import { InputParameters } from '@chainlink/external-adapter-framework/validation'
 
 // Quote values are used to find a dynamic property in the DP response, in the form of ReferenceRate{quote}
 // Since we use hard property names in response types, we need to make sure that only expected quote values appear in params
@@ -26,29 +26,28 @@ export const customSettings = {
     type: 'string',
     default: 'https://api.coinmetrics.io/v4',
   },
-  WS_ENABLED: {
-    description: 'Whether data should be returned from websocket or not',
-    type: 'boolean',
-    default: false,
-  },
 } as const
 
-export const priceInputParameters: PriceEndpointInputParameters & { quote: { options: string[] } } =
-  {
-    base: {
-      type: 'string',
-      description: 'The symbol of symbols of the currency to query',
-      required: true,
-      aliases: ['from', 'coin'],
-    },
-    quote: {
-      type: 'string',
-      description: 'The symbol of the currency to convert to',
-      required: true,
-      aliases: ['to', 'market'],
-      options: Object.values(VALID_QUOTES),
-    },
-  }
+export const priceInputParameters = {
+  base: {
+    type: 'string',
+    description: 'The symbol of symbols of the currency to query',
+    required: true,
+    aliases: ['from', 'coin'],
+  },
+  quote: {
+    type: 'string',
+    description: 'The symbol of the currency to convert to',
+    required: true,
+    aliases: ['to', 'market'],
+    options: Object.values(VALID_QUOTES),
+  },
+  transport: {
+    description: 'which transport to route to',
+    required: false,
+    type: 'string',
+  },
+} as const
 
 export interface ResponseSchema {
   data: {

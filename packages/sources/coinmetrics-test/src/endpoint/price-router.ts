@@ -2,7 +2,7 @@ import { RoutingTransport } from '@chainlink/external-adapter-framework/transpor
 import { wsTransport } from './price-ws'
 import { customSettings, priceInputParameters, VALID_QUOTES } from '../config'
 import { SingleNumberResultResponse } from '@chainlink/external-adapter-framework/util'
-import { AdapterEndpoint } from '@chainlink/external-adapter-framework/adapter'
+import { PriceEndpoint } from '@chainlink/external-adapter-framework/adapter'
 import { httpTransport } from './price'
 
 export type MetricData = {
@@ -25,6 +25,7 @@ interface ResponseSchema {
 export type AssetMetricsRequestBody = {
   base: string
   quote: VALID_QUOTES
+  transport: string
 }
 
 // Common endpoint type shared by the REST and WS transports
@@ -40,16 +41,16 @@ export type AssetMetricsEndpointTypes = {
   }
 }
 
-// Currently only routes to websocket. Stub is here for the follow-up release that will add in REST routes.
-export const routingTransport = new RoutingTransport<AssetMetricsEndpointTypes>(
-  {
-    WS: wsTransport,
-    HTTP: httpTransport,
-  },
-  (_, adapterConfig) => (adapterConfig.WS_ENABLED ? 'WS' : 'HTTP'),
-)
+const transports = {
+  ws: wsTransport,
+  rest: httpTransport,
+}
 
-export const endpoint = new AdapterEndpoint<AssetMetricsEndpointTypes>({
+export const routingTransport = new RoutingTransport<AssetMetricsEndpointTypes>(transports, {
+  defaultTransport: 'rest',
+})
+
+export const endpoint = new PriceEndpoint<AssetMetricsEndpointTypes>({
   name: 'price',
   transport: routingTransport,
   inputParameters: priceInputParameters,
