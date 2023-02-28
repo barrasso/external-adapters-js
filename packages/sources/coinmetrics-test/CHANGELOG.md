@@ -1,5 +1,17 @@
 # @chainlink/coinmetrics-test-adapter
 
+## 1.0.7
+
+### Patch Changes
+
+- cc835dfef: Add crypto alias to price endpoint
+
+## 1.0.6
+
+### Patch Changes
+
+- ae1cf06fb: Update EA framework version to v0.23.2
+
 ## 1.0.5
 
 ### Patch Changes
