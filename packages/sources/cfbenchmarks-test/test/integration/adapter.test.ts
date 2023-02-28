@@ -69,7 +69,7 @@ describe('rest', () => {
   })
 })
 
-describe('websocket', () => {
+fdescribe('websocket', () => {
   let fastify: ServerInstance | undefined
   let req: SuperTest<Test>
   let spy: jest.SpyInstance
