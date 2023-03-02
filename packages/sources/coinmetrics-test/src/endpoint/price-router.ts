@@ -1,6 +1,5 @@
-import { RoutingTransport } from '@chainlink/external-adapter-framework/transports/meta'
 import { wsTransport } from './price-ws'
-import { customSettings, priceInputParameters, VALID_QUOTES } from '../config'
+import { priceInputParameters, VALID_QUOTES } from '../config'
 import { SingleNumberResultResponse } from '@chainlink/external-adapter-framework/util'
 import { PriceEndpoint } from '@chainlink/external-adapter-framework/adapter'
 import { httpTransport } from './price'
@@ -25,7 +24,6 @@ interface ResponseSchema {
 export type AssetMetricsRequestBody = {
   base: string
   quote: VALID_QUOTES
-  transport: string
 }
 
 // Common endpoint type shared by the REST and WS transports
@@ -34,24 +32,20 @@ export type AssetMetricsEndpointTypes = {
   Request: {
     Params: AssetMetricsRequestBody
   }
-  CustomSettings: typeof customSettings
+  //TODO: currently setting this to typeof customSettings causes type errors in index.ts. Can be refactored after framework version update
+  CustomSettings: any
   Provider: {
     RequestBody: never
     ResponseBody: ResponseSchema
   }
 }
 
-const transports = {
-  ws: wsTransport,
-  rest: httpTransport,
-}
-
-export const routingTransport = new RoutingTransport<AssetMetricsEndpointTypes>(transports, {
-  defaultTransport: 'rest',
-})
-
 export const endpoint = new PriceEndpoint<AssetMetricsEndpointTypes>({
   name: 'price',
-  transport: routingTransport,
+  transports: {
+    ws: wsTransport,
+    rest: httpTransport,
+  },
+  defaultTransport: 'rest',
   inputParameters: priceInputParameters,
 })
